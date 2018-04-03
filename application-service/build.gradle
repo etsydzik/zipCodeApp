@@ -1,0 +1,60 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+plugins {
+//	id "net.ltgt.apt" version "0.10"
+    id "net.ltgt.apt" version "0.15"
+}
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+	maven { url "http://vaadin.com/nexus/content/repositories/vaadin-addons/" }
+}
+
+ext {
+	vaadinVersion = '8.3.3'
+	lombokVersion = '1.16.20'
+}
+
+dependencies {
+
+	compile project(':data-service')
+
+	compile("org.projectlombok:lombok:$lombokVersion")
+	apt("org.projectlombok:lombok:$lombokVersion")
+
+	compile group: 'com.vaadin.demo', name: 'vaadin-charts-examples', version: '4.0.4'
+	compile group: 'com.vaadin.addon', name: 'vaadin-charts', version: '4.0.0-alpha4'
+	compile group: 'com.vaadin.addon', name: 'vaadin-charts-model', version: '4.0.0-alpha4'
+
+	// system libraries (that's not contained in Maven repositories)
+	// DEPRECATED: just try to avoid that old-school style and do a lookup in Maven Central
+	compile fileTree(dir: "$rootDir/lib", include: ['*.jar'])
+
+
+	compile('com.vaadin:vaadin-spring-boot-starter')
+	compile ('com.vaadin:vaadin-sass-compiler:0.9.13')
+	compile 'javax.inject:javax.inject:1'
+	compile('org.springframework.boot:spring-boot-starter-web')
+
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
+	}
+}
