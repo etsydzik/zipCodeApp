@@ -4,6 +4,7 @@ gradle/wrapper/gradle-wrapper.properties
 !gradle/wrapper/gradle-wrapper.jar
 !gradle/wrapper/gradle-wraper.properties
 mongoDB/
+webapp/
 
 ### STS ###
 .apt_generated

@@ -1,6 +1,7 @@
 package by.tsydzik.application.viewes;
 
-//import by.tsydzik.application.components.BubbleChartExample;
+import by.tsydzik.application.components.BubbleChartExample;
+import by.tsydzik.application.components.DualCharts;
 import by.tsydzik.application.components.ZipCodeGrid;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -36,8 +37,11 @@ public class MainView extends VerticalLayout implements View {
     @Inject
     ZipCodeGrid zipCodeGrid;
 
-//    @Inject
-//    BubbleChartExample bubbleChartExample;
+    @Inject
+    BubbleChartExample bubbleChartExample;
+
+    @Inject
+    DualCharts dualCharts;
 
     @PostConstruct
     private void init() {
@@ -45,19 +49,29 @@ public class MainView extends VerticalLayout implements View {
         Layout logOutButton = this.createLogOutButton();
         this.addComponent(logOutButton);
         this.setComponentAlignment(logOutButton, Alignment.TOP_RIGHT);
-        this.addComponent(zipCodeGrid);
-        this.setExpandRatio(zipCodeGrid,1);
-//        this.addComponents(createBubbleChart());
-        this.setSizeFull();
+//        this.addComponent(zipCodeGrid);
+//        this.setExpandRatio(zipCodeGrid,1);
+        this.addComponents(createBubbleChart());
+        this.addComponents(createDualCharts());
+
+//        this.setSizeFull();
     }
 
-//    public FormLayout createBubbleChart() {
-//        FormLayout form = new FormLayout();
-//        Component chart = bubbleChartExample.getChart();
-//        form.addComponent(chart);
-//        form.setComponentAlignment(chart, Alignment.BOTTOM_CENTER);
-//        return form;
-//    }
+    public FormLayout createBubbleChart() {
+        FormLayout form = new FormLayout();
+        Component chart = bubbleChartExample.getChart();
+        form.addComponent(chart);
+        form.setComponentAlignment(chart, Alignment.BOTTOM_CENTER);
+        return form;
+    }
+
+    public FormLayout createDualCharts() {
+        FormLayout form = new FormLayout();
+        Component chart = dualCharts.getChart();
+        form.addComponent(chart);
+        form.setComponentAlignment(chart, Alignment.MIDDLE_CENTER);
+        return form;
+    }
 
     /**
      * Creates button for log out with listener which will clear session
