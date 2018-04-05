@@ -61,3 +61,77 @@ dependencyManagement {
 		mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
 	}
 }
+
+task widgetset {
+//    print "+++++++++++++++++++++++++++++++${projectDir.absolutePath}+++++++++++++++++++++++++"
+    def widgetsetClass = 'com.vaadin.addon.charts.Widgetset'
+//    def webAppDirName = "${projectDir.absolutePath}/src/main/resources/"
+    def webAppDirName = "${projectDir.absolutePath}/src/main/webapp/"
+
+    print "widgetapp ${webAppDirName}"
+    // Monitor changes in widgetset to rebuild widgetset
+    def widgetsetFile = new File('src/' + widgetsetClass.replaceAll(/\./, '/') + ".gwt.xml")
+    inputs.file widgetsetFile
+
+    // Monitor changes in client side classes
+//    sourceSets.main.java.srcDirs.each {
+//        inputs.files fileTree(it.absolutePath).include('**/*/tsydzik/**/*.java')
+//    }
+
+    /* Monitor changes in dependencies since upgrading a
+     * dependency should also trigger a recompile of the widgetset
+     */
+    inputs.files configurations.compile
+
+    // Target directory as the output
+    def targetDir = new File(webAppDirName + "/VAADIN/widgetsets")
+    outputs.dir targetDir
+
+    doLast {
+        print '=====================before==============================='
+        JavaExec javaExec = (JavaExec) project.task("runJar", type: JavaExec) {
+//            classpath {
+//                pathElement(path: configurations.compile.asPath)
+//                pathElement(path: sourceSets.main.runtimeClasspath.asPath)
+//                sourceSets.main.java.srcDirs.each {
+//                    pathelement(location: it.absolutePath)
+//                }
+//            classpath = project.fileTree(dir: sourceSets.main.runtimeClasspath.asPath)
+            classpath = files( sourceSets.main.runtimeClasspath.asPath,configurations.compile.asPath,sourceSets.main.java.srcDirs)
+            main = 'com.google.gwt.dev.Compiler'
+//            allJvmArgs = ['-Djava.awt.headless=true']
+            args = [
+                    "-logLevel",
+                    "INFO",
+                    "-strict",
+                    "-war",
+                    "${targetDir}",
+                    "${widgetsetClass}"
+            ]
+        }
+        javaExec.execute()
+        print '=====================after==============================='
+    }
+//        // Compile
+//        ant.java(classname: 'com.google.gwt.dev.Compiler', failOnError: 'yes', fork: 'true', maxmemory: '1g')
+//                {
+//                    classpath {
+//                        pathElement(path: configurations.compile.asPath)
+//                        pathElement(path: sourceSets.main.runtimeClasspath.asPath)
+//                        sourceSets.main.java.srcDirs.each {
+//                            pathelement(location: it.absolutePath)
+//                        }
+//                    }
+//
+//                    jvmarg(value: '-Xmx1024M')
+//                    jvmarg(value: '-Xms512M')
+//                    jvmarg(value: '-Djava.awt.headless=true')
+//
+//
+//                    arg(line: '-logLevel INFO')
+//                    arg(line: '-strict')
+//                    arg(line: '-war ' + targetDir)
+//                    arg(line: widgetsetClass)
+//                }
+//    }
+}
