@@ -1,19 +1,18 @@
 package by.tsydzik.application.viewes;
 
 import by.tsydzik.application.components.BubbleChartExample;
-import by.tsydzik.application.components.DualCharts;
+import by.tsydzik.application.components.DonutChart;
 import by.tsydzik.application.components.ZipCodeGrid;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -41,7 +40,7 @@ public class MainView extends VerticalLayout implements View {
     BubbleChartExample bubbleChartExample;
 
     @Inject
-    DualCharts dualCharts;
+    DonutChart donutChart;
 
     @PostConstruct
     private void init() {
@@ -49,28 +48,42 @@ public class MainView extends VerticalLayout implements View {
         Layout logOutButton = this.createLogOutButton();
         this.addComponent(logOutButton);
         this.setComponentAlignment(logOutButton, Alignment.TOP_RIGHT);
-//        this.addComponent(zipCodeGrid);
-//        this.setExpandRatio(zipCodeGrid,1);
-        this.addComponents(createBubbleChart());
-        this.addComponents(createDualCharts());
+
+        this.addComponents(createHorizontalLayout());
 
 //        this.setSizeFull();
     }
 
-    public FormLayout createBubbleChart() {
-        FormLayout form = new FormLayout();
-        Component chart = bubbleChartExample.getChart();
-        form.addComponent(chart);
-        form.setComponentAlignment(chart, Alignment.BOTTOM_CENTER);
-        return form;
-    }
+    public HorizontalLayout createHorizontalLayout() {
+        HorizontalLayout layout = new HorizontalLayout();
+        layout.setSpacing(false);
+        layout.setWidth("100%");
 
-    public FormLayout createDualCharts() {
-        FormLayout form = new FormLayout();
-        Component chart = dualCharts.getChart();
-        form.addComponent(chart);
-        form.setComponentAlignment(chart, Alignment.MIDDLE_CENTER);
-        return form;
+        Component chartA = donutChart.getChart();
+//        chartA.setHeight("450px");
+//        chartA.setWidth("100%");
+        layout.addComponent(chartA);
+        layout.setExpandRatio(chartA, 1.0f);
+
+        Component chartB = donutChart.getChart();
+//        chartB.setHeight("450px");
+//        chartB.setWidth("100%");
+        layout.addComponent(chartB);
+        layout.setExpandRatio(chartB, 1.0f);
+
+        Component chartC = donutChart.getChart();
+//        chartC.setHeight("225px");
+//        chartC.setWidth("100%");
+        layout.addComponent(chartC);
+        layout.setExpandRatio(chartC, 1.0f);
+
+        Component chartD = donutChart.getChart();
+//        chartD.setHeight("225px");
+//        chartD.setWidth("100%");
+        layout.addComponent(chartD);
+        layout.setExpandRatio(chartD, 1.0f);
+
+        return layout;
     }
 
     /**
