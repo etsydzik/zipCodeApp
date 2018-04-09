@@ -1,9 +1,11 @@
 package by.tsydzik.application.components;
 
+import by.tsydzik.application.entity.DonutChartEntity;
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.examples.AbstractVaadinChartExample;
 import com.vaadin.addon.charts.model.ChartType;
 import com.vaadin.addon.charts.model.Configuration;
+import com.vaadin.addon.charts.model.Cursor;
 import com.vaadin.addon.charts.model.DataSeries;
 import com.vaadin.addon.charts.model.DataSeriesItem;
 import com.vaadin.addon.charts.model.PlotOptionsPie;
@@ -35,39 +37,46 @@ public class DonutChart extends AbstractVaadinChartExample {
     }
 
     @Override
-    public Component getChart() {
-        Component ret = createChart();
-        ret.setWidth("100%");
-        ret.setHeight("450px");
+    protected Component getChart() {
+        return null;
+    }
+
+    public Component createNewChart(DonutChartEntity donutChartEntity) {
+        Component ret = createChart(donutChartEntity);
+        ret.setWidth(donutChartEntity.getChartWidth() + "%");
+        ret.setHeight(donutChartEntity.getChartHeight() + "px");
         return ret;
     }
 
-    public static Chart createChart() {
+    public static Chart createChart(DonutChartEntity donutChartEntity) {
         rand = new Random(0);
 
         Chart chart = new Chart(ChartType.PIE);
 
         Configuration conf = chart.getConfiguration();
 
-        conf.setTitle("This is running/stopped NPO");
+        conf.setTitle("");
 
-        PlotOptionsPie pie = new PlotOptionsPie();
-        pie.setShadow(false);
-        conf.setPlotOptions(pie);
+        PlotOptionsPie plotOptions = new PlotOptionsPie();
+        plotOptions.setAllowPointSelect(true);
+        plotOptions.setCursor(Cursor.POINTER);
+        conf.setPlotOptions(plotOptions);
 
         conf.getTooltip().setValueSuffix("%");
 
         DataSeries innerSeries = new DataSeries();
-        innerSeries.setName("Instance");
+        innerSeries.setName(donutChartEntity.getInstanceName());
         PlotOptionsPie innerPieOptions = new PlotOptionsPie();
         innerSeries.setPlotOptions(innerPieOptions);
-        innerPieOptions.setSize("237px");
+        innerPieOptions.setSize(donutChartEntity.getPieSize() + "px");
 //        innerPieOptions.getDataLabels().setColor(new SolidColor("RED")); // Prints an inscription inside the circle in RED
         innerPieOptions.getDataLabels().setColor(new SolidColor(255, 255, 255)); //Prints an inscription inside the circle in WHITE
-        innerPieOptions.getDataLabels().setDistance(-120);
+
+        double roundDistance = Math.round(-(donutChartEntity.getPieSize() / 2 - 1));
+        innerPieOptions.getDataLabels().setDistance(roundDistance);
 
         DataSeriesItem[] innerItems = new DataSeriesItem[]{
-                new DataSeriesItem("NPO", 100, color(0)), // 0 - BLUE, 1- RED, 2 - GREEN
+                new DataSeriesItem(donutChartEntity.getInstanceName(), 100, color(donutChartEntity.getColorIndex())), // 0 - BLUE, 1- RED, 2 - GREEN
         };
 
         innerSeries.setData(Arrays.asList(innerItems));

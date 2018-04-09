@@ -1,33 +1,28 @@
 @import "../valo/valo";
 
-
-
 @mixin size($width, $height: $width) {
   width: $width;
   height: $height/2;
 }
 
-
 @mixin cust {
   @include valo;
 
-
-
-  .v-slot.v-slot-v-top-line{
+  .v-slot.v-slot-v-top-line {
     background: black;
   }
 
-  .v-slot.v-slot-v-bottom-line{
+  .v-slot.v-slot-v-bottom-line {
     background: black;
   }
 
-  .v-top-line.v-verticallayout-v-top-line{
+  .v-top-line.v-verticallayout-v-top-line {
     padding-left: 1%;
     padding-top: 5px;
     padding-bottom: 5px;
   }
 
-  .v-vertical > .v-expand > .v-spacing{
+  .v-vertical > .v-expand > .v-spacing {
     height: 1px;
   }
 
@@ -38,10 +33,7 @@
     background-position: left center;
   }
 
-
-
-
-  #login-panel .v-panel-caption{
+  #login-panel .v-panel-caption {
     background: #342b2b;
     text-transform: uppercase;
     color: white;
@@ -53,22 +45,21 @@
 
   }
 
-
   #login-panel {
     background-color: gainsboro;
   }
 
-  #username.v-textfield{
+  #username.v-textfield {
     width: 100%;
     text-align: center;
   }
 
-  #password.v-textfield{
+  #password.v-textfield {
     width: 100%;
     text-align: center;
   }
 
-  .v-widget.v-has-caption.v-caption-on-top{
+  .v-widget.v-has-caption.v-caption-on-top {
     width: 100%;
     font-weight: 700;
     font-size: .8em;
@@ -78,15 +69,15 @@
     line-height: 2em;
   }
 
-  #gwt-uid-2.v-caption{
+  #gwt-uid-2.v-caption {
     text-align: center;
   }
 
-  #gwt-uid-4.v-caption{
+  #gwt-uid-4.v-caption {
     text-align: center;
   }
 
-  #login-panel .v-button{
+  #login-panel .v-button {
 
     border-radius: 2px;
     color: white;
@@ -98,13 +89,12 @@
     cursor: pointer;
     width: 100%;
   }
+}
 
+.cust.v-app, .cust.v-app-loading {
+  background-color: #FFFFFF !important;
+}
 
-
-
-
-
-
-
-
+.cust .v-margin-top {
+  padding-top: 0px !important;
 }

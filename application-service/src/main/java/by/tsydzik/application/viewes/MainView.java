@@ -3,6 +3,7 @@ package by.tsydzik.application.viewes;
 import by.tsydzik.application.components.BubbleChartExample;
 import by.tsydzik.application.components.DonutChart;
 import by.tsydzik.application.components.ZipCodeGrid;
+import by.tsydzik.application.entity.DonutChartEntity;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -54,36 +55,74 @@ public class MainView extends VerticalLayout implements View {
 //        this.setSizeFull();
     }
 
+
     public HorizontalLayout createHorizontalLayout() {
-        HorizontalLayout layout = new HorizontalLayout();
-        layout.setSpacing(false);
-        layout.setWidth("100%");
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.setSpacing(false);
+        horizontalLayout.setWidth("100%");
 
-        Component chartA = donutChart.getChart();
-//        chartA.setHeight("450px");
-//        chartA.setWidth("100%");
-        layout.addComponent(chartA);
-        layout.setExpandRatio(chartA, 1.0f);
+        editElemInHorizontalLayout(100, 300, "NPO", 200, 2, horizontalLayout);
+        editElemInHorizontalLayout(100, 300, "JobManager", 200, 2, horizontalLayout);
+        editElemInHorizontalLayout(100, 300, "RabbitMQ", 200, 2, horizontalLayout);
 
-        Component chartB = donutChart.getChart();
-//        chartB.setHeight("450px");
-//        chartB.setWidth("100%");
-        layout.addComponent(chartB);
-        layout.setExpandRatio(chartB, 1.0f);
+        VerticalLayout verticalLayout = new VerticalLayout();
+        editElemInVerticalLayout(100, 150, "Service1", 100, 2, verticalLayout);
+        editElemInVerticalLayout(100, 150, "Service2", 100, 2, verticalLayout);
 
-        Component chartC = donutChart.getChart();
-//        chartC.setHeight("225px");
-//        chartC.setWidth("100%");
-        layout.addComponent(chartC);
-        layout.setExpandRatio(chartC, 1.0f);
+        horizontalLayout.addComponent(verticalLayout);
+        horizontalLayout.setExpandRatio(verticalLayout, 1.0f);
 
-        Component chartD = donutChart.getChart();
-//        chartD.setHeight("225px");
-//        chartD.setWidth("100%");
-        layout.addComponent(chartD);
-        layout.setExpandRatio(chartD, 1.0f);
+        VerticalLayout verticalLayout2 = new VerticalLayout();
+        editElemInVerticalLayout(100, 150, "Service3", 100, 2, verticalLayout2);
+        editElemInVerticalLayout(100, 150, "Service4", 100, 2, verticalLayout2);
 
-        return layout;
+        horizontalLayout.addComponent(verticalLayout2);
+        horizontalLayout.setExpandRatio(verticalLayout2, 1.0f);
+
+        return horizontalLayout;
+    }
+
+    public HorizontalLayout editElemInHorizontalLayout(int chartWidth,
+                                                       int chartHeight,
+                                                       String instanceName,
+                                                       double pieSize,
+                                                       int colorIndex,
+                                                       HorizontalLayout horizontalLayout) {
+        DonutChartEntity donutChart = createDonutChartEntity(chartWidth, chartHeight, instanceName, pieSize, colorIndex);
+        Component chart = this.donutChart.createNewChart(donutChart);
+        horizontalLayout.addComponent(chart);
+        horizontalLayout.setExpandRatio(chart, 1.0f);
+        return horizontalLayout;
+    }
+
+    public VerticalLayout editElemInVerticalLayout(int chartWidth,
+                                                   int chartHeight,
+                                                   String instanceName,
+                                                   double pieSize,
+                                                   int colorIndex,
+                                                   VerticalLayout verticalLayout) {
+        DonutChartEntity donutChart = createDonutChartEntity(chartWidth, chartHeight, instanceName, pieSize, colorIndex);
+        Component chart = this.donutChart.createNewChart(donutChart);
+        verticalLayout.addComponent(chart);
+        verticalLayout.setExpandRatio(chart, 1.0f);
+        return verticalLayout;
+    }
+
+    //We need put JSON or getting data from somewhere
+    private DonutChartEntity createDonutChartEntity(
+            int chartWidth,
+            int chartHeight,
+            String instanceName,
+            double pieSize,
+            int colorIndex) {
+        DonutChartEntity donutChartEntity = new DonutChartEntity();
+        donutChartEntity.setChartWidth(chartWidth);
+        donutChartEntity.setChartHeight(chartHeight);
+        donutChartEntity.setInstanceName(instanceName);
+        donutChartEntity.setTitle(donutChartEntity.getInstanceName() + " is running");
+        donutChartEntity.setPieSize(pieSize);
+        donutChartEntity.setColorIndex(colorIndex);
+        return donutChartEntity;
     }
 
     /**
